@@ -417,6 +417,7 @@ button {
 
 .contact-inner .section-header {
   margin-inline: auto;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .contact-links {
@@ -424,7 +425,7 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem 1.75rem;
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
 .contact-link {
