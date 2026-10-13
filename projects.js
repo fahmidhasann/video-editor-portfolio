@@ -126,7 +126,7 @@ window.PORTFOLIO = {
     { src: "assets/photos/p17", w: 1080, h: 1439, alt: "Boy on the beach holding a net of coconuts" },
     { src: "assets/photos/p18", w: 1200, h: 1600, alt: "Lone palm tree in fog" },
     { src: "assets/photos/p19", w: 1456, h: 919, alt: "Lone shed in a fog-covered field" },
-    { src: "assets/photos/p20", w: 1114, h: 1600, alt: "Old palace framed through an arched doorway" },
+    { src: "assets/photos/p20", w: 1200, h: 1600, alt: "Lone tree in a green field under storm light" },
     { src: "assets/photos/p21", w: 1200, h: 1600, alt: "Tree tunnel road disappearing into mist" },
     { src: "assets/photos/p22", w: 1200, h: 1600, alt: "Kite perched alone on a branch" },
     { src: "assets/photos/p23", w: 1200, h: 1600, alt: "Small boat on a misty river" }
