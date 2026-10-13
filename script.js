@@ -3,6 +3,25 @@
   const esc = (s = "") =>
     String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const pad = (n) => String(n).padStart(2, "0");
+
+  /* Scroll lock that also holds on iOS Safari (overflow:hidden alone doesn't) */
+  let lockCount = 0, lockY = 0;
+  const lockScroll = () => {
+    if (lockCount++ > 0) return;
+    lockY = window.scrollY;
+    document.body.style.top = `-${lockY}px`;
+    document.body.classList.add("is-locked");
+  };
+  const unlockScroll = () => {
+    if (lockCount === 0 || --lockCount > 0) return;
+    document.body.classList.remove("is-locked");
+    document.body.style.top = "";
+    const html = document.documentElement;
+    const prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+    window.scrollTo(0, lockY);
+    html.style.scrollBehavior = prev;
+  };
   const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
   const arrow = '<span class="film-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>';
 
@@ -100,7 +119,7 @@
     v.muted = true; v.defaultMuted = true; v.playsInline = true;
     v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
     if (touch) previews.forEach((o) => { if (o !== v && !o.paused) stopPreview(o); });
-    if (!v.src) v.src = v.dataset.src;
+    if (!v.getAttribute("src")) v.src = v.dataset.src;
     const p = v.play();
     if (p) p.then(() => v.classList.add("is-playing")).catch(() => {});
   };
@@ -109,8 +128,17 @@
     v.classList.remove("is-playing");
   };
   if (!reduce && !saveData && "IntersectionObserver" in window) {
+    /* Wait until a card has stayed on screen briefly before loading/decoding
+       its video, so fast scrolling never stalls on video work. */
+    const timers = new WeakMap();
     const pio = new IntersectionObserver(
-      (entries) => entries.forEach((e) => (e.isIntersecting ? startPreview(e.target) : stopPreview(e.target))),
+      (entries) =>
+        entries.forEach((e) => {
+          const v = e.target;
+          clearTimeout(timers.get(v));
+          if (e.isIntersecting) timers.set(v, setTimeout(() => startPreview(v), touch ? 350 : 150));
+          else stopPreview(v);
+        }),
       { threshold: 0.6 }
     );
     previews.forEach((v) => pio.observe(v));
@@ -170,7 +198,7 @@
     pv.poster = item.image;
     loadSource(item.video);
     player.hidden = false;
-    document.body.classList.add("menu-open");
+    lockScroll();
     requestAnimationFrame(() => player.classList.add("is-open"));
     previews.forEach(stopPreview);
     player.querySelector(".player-box .icon-btn").focus({ preventScroll: true });
@@ -183,7 +211,7 @@
     pv.load();
     player.classList.remove("is-open");
     player.hidden = true;
-    document.body.classList.remove("menu-open");
+    unlockScroll();
     if (lastFocus) lastFocus.focus({ preventScroll: true });
   };
   document.addEventListener("click", (e) => {
@@ -235,7 +263,7 @@
     vLast = document.activeElement;
     showPhoto(i);
     viewer.hidden = false;
-    document.body.classList.add("menu-open");
+    lockScroll();
     requestAnimationFrame(() => viewer.classList.add("is-open"));
     viewer.querySelector(".viewer-close").focus({ preventScroll: true });
   };
@@ -243,7 +271,7 @@
     if (!viewer || viewer.hidden) return;
     viewer.classList.remove("is-open");
     viewer.hidden = true;
-    document.body.classList.remove("menu-open");
+    unlockScroll();
     if (vLast) vLast.focus({ preventScroll: true });
   };
   if (viewer) {
@@ -277,18 +305,49 @@
   const header = document.querySelector(".header");
   const toggle = document.getElementById("navToggle");
   const menu = document.getElementById("navMenu");
-  const onScroll = () => header && header.classList.toggle("is-scrolled", window.scrollY > 10);
+  let scrolled = null, ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      if (document.body.classList.contains("is-locked")) return;
+      const s = window.scrollY > 10;
+      if (s !== scrolled && header) { scrolled = s; header.classList.toggle("is-scrolled", s); }
+    });
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-  const setMenu = (open) => {
-    if (!toggle || !menu) return;
+  let menuOpen = false;
+  const setMenu = (open, jumpTo) => {
+    if (!toggle || !menu || open === menuOpen) return;
+    menuOpen = open;
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     menu.classList.toggle("is-open", open);
-    document.body.classList.toggle("menu-open", open);
+    document.body.classList.toggle("nav-open", open);
+    if (open) lockScroll();
+    else {
+      unlockScroll();
+      if (jumpTo) {
+        const t = document.querySelector(jumpTo);
+        if (t) t.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      }
+    }
   };
-  if (toggle) toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
-  if (menu) menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  if (toggle) toggle.addEventListener("click", () => setMenu(!menuOpen));
+  if (menu)
+    menu.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", (e) => {
+        if (!menuOpen) return;
+        e.preventDefault();
+        const hash = a.getAttribute("href");
+        setMenu(false, hash);
+        if (history.replaceState) history.replaceState(null, "", hash);
+      })
+    );
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  window.matchMedia("(min-width: 761px)").addEventListener("change", (m) => { if (m.matches) setMenu(false); });
 
   /* Reveal on scroll */
   const items = document.querySelectorAll(".reveal");
