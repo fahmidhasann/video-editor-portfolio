@@ -365,4 +365,11 @@
   } else {
     items.forEach((el) => el.classList.add("is-visible"));
   }
+
+  /* Back to top (the #top header is fixed, so a plain anchor can't scroll to it) */
+  document.querySelectorAll('a[href="#top"]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+  }));
 })();
