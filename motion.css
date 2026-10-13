@@ -1,0 +1,201 @@
+/* ==========================================================
+   Motion layer — "the site is an edit timeline".
+   Everything here is additive: delete motion.css + motion.js
+   and the site falls back to its calm original.
+   Only transform / opacity animate, so scrolling stays on the GPU.
+   ========================================================== */
+
+/* ---------- Atmosphere: light leak + film grain ---------- */
+.atmos { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; contain: strict; }
+.leak {
+  position: absolute; width: 90vmax; height: 90vmax; border-radius: 50%;
+  will-change: transform, opacity;
+}
+.leak-a {
+  left: 30%; top: -30vmax;
+  background: radial-gradient(closest-side, rgba(227, 173, 98, 0.15), rgba(227, 173, 98, 0.05) 45%, transparent 72%);
+}
+.leak-b {
+  left: -40%; top: 20vh;
+  background: radial-gradient(closest-side, rgba(196, 92, 52, 0.11), rgba(196, 92, 52, 0.03) 50%, transparent 72%);
+  opacity: 0;
+}
+.grain {
+  position: fixed; inset: -60px; z-index: 90; pointer-events: none;
+  background: url("assets/grain.png") repeat;
+  background-size: 160px 160px;
+  opacity: 0.045;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .grain { animation: grain 0.9s steps(6) infinite; }
+}
+@keyframes grain {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-23px, 14px, 0); }
+  40% { transform: translate3d(17px, -31px, 0); }
+  60% { transform: translate3d(-9px, 27px, 0); }
+  80% { transform: translate3d(29px, 8px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Let the atmosphere breathe through the section backgrounds */
+.section-alt { background: rgba(19, 18, 16, 0.62); }
+.contact { background: radial-gradient(60% 80% at 50% 100%, rgba(227, 173, 98, 0.12), transparent 70%); }
+.hero-glow { display: none; }
+
+/* ---------- Header: scroll progress + timecode ---------- */
+.brand-name { white-space: nowrap; }
+@media (max-width: 380px) { .brand-name { font-size: 0.95rem; } }
+.scrub {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; z-index: 3;
+  background: var(--accent);
+  transform-origin: 0 50%; transform: scaleX(0);
+  opacity: 0; transition: opacity 0.4s var(--ease);
+  pointer-events: none;
+}
+.header.is-scrolled .scrub { opacity: 0.85; }
+body.nav-open .scrub { opacity: 0; }
+.tc {
+  display: none; align-items: center; gap: 0.45rem;
+  margin-left: auto;
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  opacity: 0; transform: translateY(-4px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  position: relative; z-index: 2; pointer-events: none;
+}
+.tc i { width: 6px; height: 6px; border-radius: 50%; background: #ff4d3d; flex: none; }
+.header.is-scrolled .tc { opacity: 1; transform: none; }
+body.nav-open .tc { opacity: 0; }
+@media (max-width: 760px) {
+  .tc { display: inline-flex; }
+  .m-on .nav { gap: 0.75rem; }
+  .m-on .nav-toggle { margin-left: 0; margin-right: -10px; flex-shrink: 0; }
+  .brand { min-width: 0; }
+}
+
+/* ---------- Timeline rail (wide screens) ---------- */
+.rail { display: none; }
+@media (min-width: 1200px) {
+  .rail {
+    display: block; position: fixed; z-index: 40;
+    right: 26px; top: 50%; height: 46vh; width: 14px;
+    transform: translateY(-50%);
+    opacity: 0; transition: opacity 0.5s var(--ease);
+  }
+  .rail.is-on { opacity: 1; }
+  .rail-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--line-2); }
+  .rail-fill {
+    position: absolute; left: 50%; top: 0; width: 1px; height: 100%;
+    background: var(--accent); transform-origin: 50% 0; transform: scaleY(0);
+  }
+  .rail-head {
+    position: absolute; left: 50%; top: 0; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(227, 173, 98, 0.18);
+  }
+  .rail-mark {
+    position: absolute; left: 50%; width: 22px; height: 18px; margin: -9px 0 0 -11px;
+    display: grid; place-items: center;
+  }
+  .rail-mark::before {
+    content: ""; width: 7px; height: 1px; background: var(--faint);
+    transition: width 0.35s var(--ease), background 0.35s var(--ease);
+  }
+  .rail-mark span {
+    position: absolute; right: 26px; top: 50%; transform: translate(6px, -50%);
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap; color: var(--muted);
+    opacity: 0; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    pointer-events: none;
+  }
+  .rail-mark:hover span, .rail-mark:focus-visible span { opacity: 1; transform: translate(0, -50%); }
+  .rail:hover .rail-mark span { opacity: 0.55; transform: translate(0, -50%); }
+  .rail:hover .rail-mark:hover span, .rail:hover .rail-mark.is-active span { opacity: 1; }
+  .rail::before { content: ""; position: absolute; inset: -12px -14px -12px -150px; }
+  .rail-mark.is-active::before { width: 13px; background: var(--accent); }
+  .rail-tc {
+    position: absolute; top: calc(100% + 18px); right: -2px;
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; color: var(--faint);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+}
+
+/* ---------- Hero: title card + slow push-in ---------- */
+.m-on .hero-title.reveal { opacity: 1; transform: none; }
+.ln { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.04em 0.12em; margin: 0 -0.04em -0.12em; }
+.ln > span { display: inline-block; transform: translate3d(0, 108%, 0); transition: transform 1.25s var(--ease); }
+.hero-title.is-visible .ln > span { transform: none; }
+.hero-title.is-visible .ln:nth-child(2) > span { transition-delay: 0.14s; }
+.m-on .hero-frame picture { display: block; height: 100%; will-change: transform; }
+.m-on .hero-frame img { transform: none; transition: none; }
+.m-on .hero-frame picture { clip-path: inset(8% 8% 8% 8% round 18px); transition: clip-path 1.6s var(--ease) 0.25s; }
+.m-on .hero-figure.is-visible .hero-frame picture { clip-path: inset(0 0 0 0 round 0); }
+
+/* ---------- Section titles: masked wipe ---------- */
+.m-on .reveal .section-title, .m-on .reveal .contact-title {
+  clip-path: inset(0 0 100% 0);
+  transform: translate3d(0, 0.35em, 0);
+  transition: clip-path 1.1s var(--ease) 0.1s, transform 1.1s var(--ease) 0.1s;
+}
+.m-on .reveal.is-visible .section-title, .m-on .reveal.is-visible .contact-title {
+  clip-path: inset(-20% -4% -25% -4%);
+  transform: none;
+}
+.m-on .reveal .kicker::before {
+  content: ""; display: inline-block; width: 1.6rem; height: 1px; margin-right: 0.6rem;
+  vertical-align: middle; background: currentColor;
+  transform-origin: 0 50%; transform: scaleX(0); transition: transform 0.9s var(--ease) 0.15s;
+}
+.m-on .reveal.is-visible .kicker::before { transform: scaleX(1); }
+
+/* ---------- Films: letterbox opens like a screen ---------- */
+.m-on .film-media::before, .m-on .film-media::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 13%; z-index: 3;
+  background: #050504; pointer-events: none;
+  transition: transform 1.2s var(--ease) 0.15s;
+}
+.m-on .film-media::before { top: 0; transform-origin: 50% 0; }
+.m-on .film-media::after { bottom: 0; transform-origin: 50% 100%; }
+.m-on .film-media.is-shot::before, .m-on .film-media.is-shot::after { transform: scaleY(0); }
+.m-on .film-media > img { scale: 1.08; transition: transform 1s var(--ease), scale 1.6s var(--ease) 0.1s; }
+.m-on .film-media.is-shot > img { scale: 1; }
+
+/* ---------- Reels: lean with the swipe ---------- */
+.m-on .reels-track .reel-media, .m-on .explainer-reels .reel-media {
+  transform: skewX(var(--skew, 0deg));
+  transform-origin: 50% 100%;
+}
+
+/* ---------- Photos: parallax inside the frame ---------- */
+.m-on .photo img { inset: -9% 0; height: 118%; translate: 0 var(--py, 0px); }
+
+/* ---------- Contact: end-credits light sweep ---------- */
+.m-on .contact-title em {
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent) 38%, #fff3dc 50%, var(--accent) 62%, var(--accent) 100%);
+  background-size: 260% 100%; background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  padding-right: 0.08em;
+}
+.m-on .contact.is-live .contact-title em { animation: sweep 4.5s var(--ease) 0.6s infinite; }
+@keyframes sweep { 0% { background-position: 100% 0; } 55%, 100% { background-position: 0% 0; } }
+
+/* ---------- Desktop: play cursor ---------- */
+.cursor {
+  position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none;
+  width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(242, 236, 226, 0.94); color: var(--bg);
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  transform: translate3d(-200px, -200px, 0); will-change: transform;
+}
+.cursor b { font-weight: 500; transform: scale(0); opacity: 0; transition: transform 0.45s var(--ease), opacity 0.3s; display: inline-flex; gap: 0.35rem; align-items: center; }
+.cursor b svg { width: 10px; height: 10px; fill: currentColor; stroke: none; }
+.cursor { scale: 0; transition: scale 0.45s var(--ease); }
+.cursor.is-on { scale: 1; }
+.cursor.is-on b { transform: none; opacity: 1; }
+.has-cursor .film:hover .play, .has-cursor .reel:hover .play { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .leak, .rail, .cursor { display: none !important; }
+}
