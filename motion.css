@@ -26,16 +26,6 @@
   background-size: 160px 160px;
   opacity: 0.045;
 }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .grain { animation: grain 0.9s steps(6) infinite; }
-}
-@keyframes grain {
-  0% { transform: translate3d(0, 0, 0); }
-  20% { transform: translate3d(-23px, 14px, 0); }
-  40% { transform: translate3d(17px, -31px, 0); }
-  60% { transform: translate3d(-9px, 27px, 0); }
-  80% { transform: translate3d(29px, 8px, 0); }
-  100% { transform: translate3d(0, 0, 0); }
 }
 
 /* Let the atmosphere breathe through the section backgrounds */
@@ -180,22 +170,7 @@ body.nav-open .tc { opacity: 0; }
 .m-on .contact.is-live .contact-title em { animation: sweep 4.5s var(--ease) 0.6s infinite; }
 @keyframes sweep { 0% { background-position: 100% 0; } 55%, 100% { background-position: 0% 0; } }
 
-/* ---------- Desktop: play cursor ---------- */
-.cursor {
-  position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none;
-  width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: rgba(242, 236, 226, 0.94); color: var(--bg);
-  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
-  transform: translate3d(-200px, -200px, 0); will-change: transform;
-}
-.cursor b { font-weight: 500; transform: scale(0); opacity: 0; transition: transform 0.45s var(--ease), opacity 0.3s; display: inline-flex; gap: 0.35rem; align-items: center; }
-.cursor b svg { width: 10px; height: 10px; fill: currentColor; stroke: none; }
-.cursor { scale: 0; transition: scale 0.45s var(--ease); }
-.cursor.is-on { scale: 1; }
-.cursor.is-on b { transform: none; opacity: 1; }
-.has-cursor .film:hover .play, .has-cursor .reel:hover .play { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .leak, .rail, .cursor { display: none !important; }
+  .leak, .rail { display: none !important; }
 }

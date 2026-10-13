@@ -136,25 +136,6 @@
     }, { passive: true })
   );
 
-  /* ---------- Play cursor (mouse only) ---------- */
-  let cur = null, mx = -200, my = -200, cx = -200, cy = -200, curOn = false;
-  if (fine) {
-    cur = document.createElement("div");
-    cur.className = "cursor";
-    cur.setAttribute("aria-hidden", "true");
-    cur.innerHTML = '<b><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg>Play</b>';
-    body.appendChild(cur);
-    root.classList.add("has-cursor");
-    window.addEventListener("pointermove", (e) => {
-      mx = e.clientX; my = e.clientY;
-      const on = !!(e.target.closest && e.target.closest(".film, .reel"));
-      if (on !== curOn) { curOn = on; cur.classList.toggle("is-on", on); }
-      if (cx < -100) { cx = mx; cy = my; }
-      kick();
-    }, { passive: true });
-    document.addEventListener("pointerleave", () => { curOn = false; cur.classList.remove("is-on"); });
-  }
-
   /* ---------- The loop ---------- */
   let running = false, sy = window.scrollY, lp = -1, leakY = 0, idle = 0;
   const frame = () => {
@@ -209,13 +190,6 @@
       else tr.skew = 0;
       tr.el.style.setProperty("--skew", `${tr.skew.toFixed(2)}deg`);
     });
-
-    /* cursor */
-    if (cur) {
-      cx += (mx - cx) * 0.2; cy += (my - cy) * 0.2;
-      if (Math.abs(mx - cx) > 0.3 || Math.abs(my - cy) > 0.3) moving = true;
-      cur.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-    }
 
     if (moving) idle = 0; else idle++;
     if (idle > 3) { running = false; return; }
