@@ -31,6 +31,15 @@ window.PORTFOLIO = {
       url: "https://www.facebook.com/fahmiddhasann/videos/2089556841420087"
     },
     {
+      title: "Shimul",
+      category: "AI Short Film",
+      description: "A 78-second narrative, storyboarded and generated with Google Flow.",
+      image: "assets/project_4.jpg",
+      preview: "assets/video/film4-preview.mp4",
+      video: "assets/video/film4/master.m3u8",
+      url: "https://www.facebook.com/reel/1234951018536781"
+    },
+    {
       title: "Algorithm of Life",
       category: "Short Film",
       description: "Your choices define your life's algorithm.",
@@ -38,6 +47,15 @@ window.PORTFOLIO = {
       preview: "assets/video/film3-preview.mp4",
       video: "assets/video/film3/master.m3u8",
       url: "https://www.facebook.com/fahmiddhasann/videos/1470028527301962"
+    },
+    {
+      title: "বিশ্বস্ত মরীচিকা",
+      category: "AI Short Film",
+      description: "A narrative AI film about trust, perception, and reality.",
+      image: "assets/project_5.jpg",
+      preview: "assets/video/film5-preview.mp4",
+      video: "assets/video/film5/master.m3u8",
+      url: "https://www.facebook.com/reel/1383964689934673"
     }
   ],
 
