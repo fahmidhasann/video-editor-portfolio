@@ -42,8 +42,8 @@
 
   /* ---------- Timeline rail ---------- */
   const chapters = [
-    ["top", "Open"], ["work", "Films"], ["motion", "Motion"], ["reels", "Reels"],
-    ["explainers", "Explainers"], ["photos", "Photos"], ["about", "About"], ["contact", "Contact"]
+    ["top", "Open"], ["work", "Films"], ["motion", "Motion"], ["explainers", "Explainers"],
+    ["reels", "Reels"], ["photos", "Photos"], ["about", "About"], ["contact", "Contact"]
   ]
     .map(([id, label]) => ({ id, label, el: id === "top" ? document.querySelector(".hero") : document.getElementById(id) }))
     .filter((c) => c.el);
