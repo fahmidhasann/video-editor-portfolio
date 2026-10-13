@@ -100,6 +100,9 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
 .nav-links a { font-size: 0.92rem; color: var(--muted); transition: color 0.25s; }
 .nav-links a:hover { color: var(--text); }
 .nav-cta-mobile { display: none; }
+.nav-links .nav-world a { color: #8fe3b4; }
+.nav-links .nav-world a:hover { color: #b6f0cf; }
+.footer-world em { font-family: var(--serif); font-style: italic; color: #8fe3b4; font-size: 1.1em; }
 .nav-toggle { display: none; width: 44px; height: 44px; margin-left: auto; flex-direction: column; justify-content: center; align-items: center; gap: 6px; }
 .nav-toggle span { width: 22px; height: 1.5px; border-radius: 2px; background: var(--text); transition: transform 0.4s var(--ease); }
 .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.75px) rotate(45deg); }
