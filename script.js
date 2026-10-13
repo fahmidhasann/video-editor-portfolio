@@ -171,9 +171,9 @@
     pgrid.innerHTML = photos
       .map(
         (p, i) => `
-      <button type="button" class="photo reveal" data-photo="${i}" aria-label="View photo: ${esc(p.alt)}">
+      <button type="button" class="photo reveal${p.w > p.h ? " photo--wide" : ""}" data-photo="${i}" aria-label="View photo: ${esc(p.alt)}">
         <img src="${esc(p.src)}-800.webp" srcset="${esc(p.src)}-800.webp 800w, ${esc(p.src)}-1600.webp 1600w"
-          sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, 25vw"
+          sizes="${p.w > p.h ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw"}"
           width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" loading="lazy" decoding="async">
       </button>`
       )
