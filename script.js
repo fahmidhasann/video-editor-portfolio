@@ -164,6 +164,73 @@
   });
   pv.addEventListener("loadeddata", () => stage.classList.remove("is-error"));
 
+  /* Photography */
+  const photos = data.photos || [];
+  const pgrid = document.getElementById("photo-grid");
+  if (pgrid) {
+    pgrid.innerHTML = photos
+      .map(
+        (p, i) => `
+      <button type="button" class="photo reveal" data-photo="${i}" aria-label="View photo: ${esc(p.alt)}">
+        <img src="${esc(p.src)}-800.webp" srcset="${esc(p.src)}-800.webp 800w, ${esc(p.src)}-1600.webp 1600w"
+          sizes="(max-width: 560px) 50vw, (max-width: 1000px) 33vw, 25vw"
+          width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" loading="lazy" decoding="async">
+      </button>`
+      )
+      .join("");
+  }
+  const viewer = document.getElementById("viewer");
+  const vImg = document.getElementById("viewerImg");
+  const vCount = document.getElementById("viewerCount");
+  let vIndex = 0, vLast = null;
+  const showPhoto = (i) => {
+    vIndex = (i + photos.length) % photos.length;
+    const p = photos[vIndex];
+    vImg.src = p.src + "-1600.webp";
+    vImg.alt = p.alt;
+    vCount.textContent = `${pad(vIndex + 1)} / ${pad(photos.length)}`;
+    [vIndex + 1, vIndex - 1].forEach((j) => { const q = photos[(j + photos.length) % photos.length]; if (q) new Image().src = q.src + "-1600.webp"; });
+  };
+  const openViewer = (i) => {
+    if (!viewer) return;
+    vLast = document.activeElement;
+    showPhoto(i);
+    viewer.hidden = false;
+    document.body.classList.add("menu-open");
+    requestAnimationFrame(() => viewer.classList.add("is-open"));
+    viewer.querySelector(".viewer-close").focus({ preventScroll: true });
+  };
+  const closeViewer = () => {
+    if (!viewer || viewer.hidden) return;
+    viewer.classList.remove("is-open");
+    viewer.hidden = true;
+    document.body.classList.remove("menu-open");
+    if (vLast) vLast.focus({ preventScroll: true });
+  };
+  if (viewer) {
+    document.addEventListener("click", (e) => {
+      const ph = e.target.closest("[data-photo]");
+      if (ph) return openViewer(Number(ph.dataset.photo));
+      const st = e.target.closest("[data-vstep]");
+      if (st) return showPhoto(vIndex + Number(st.dataset.vstep));
+      if (e.target.closest("[data-vclose]") || e.target === viewer) closeViewer();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (viewer.hidden) return;
+      if (e.key === "Escape") closeViewer();
+      if (e.key === "ArrowRight") showPhoto(vIndex + 1);
+      if (e.key === "ArrowLeft") showPhoto(vIndex - 1);
+    });
+    let tx = null;
+    viewer.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive: true });
+    viewer.addEventListener("touchend", (e) => {
+      if (tx === null) return;
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 40) showPhoto(vIndex + (dx < 0 ? 1 : -1));
+      tx = null;
+    });
+  }
+
   const y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
