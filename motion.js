@@ -139,17 +139,6 @@
     railTc.textContent = "00:" + t;
   };
 
-  /* ---------- Reels lean with swipe velocity ---------- */
-  const tracks = [...document.querySelectorAll(".reels-track, .explainer-reels")].map((el) => ({ el, x: el.scrollLeft, skew: 0, target: 0 }));
-  tracks.forEach((t) =>
-    t.el.addEventListener("scroll", () => {
-      const dx = t.el.scrollLeft - t.x;
-      t.x = t.el.scrollLeft;
-      t.target = Math.max(-5, Math.min(5, -dx * 0.22));
-      kick();
-    }, { passive: true })
-  );
-
   /* ---------- The loop ---------- */
   let running = false, sy = window.scrollY, lp = -1, leakY = 0, idle = 0;
   const frame = () => {
@@ -195,15 +184,6 @@
       const r = ph.getBoundingClientRect();
       const c = (r.top + r.height / 2 - H / 2) / (H / 2 + r.height / 2); /* -1 .. 1 */
       ph.style.setProperty("--py", `${(-c * r.height * 0.07).toFixed(1)}px`);
-    });
-
-    /* reels spring back */
-    tracks.forEach((tr) => {
-      tr.skew += (tr.target - tr.skew) * 0.18;
-      tr.target *= 0.82;
-      if (Math.abs(tr.skew) > 0.02 || Math.abs(tr.target) > 0.02) moving = true;
-      else tr.skew = 0;
-      tr.el.style.setProperty("--skew", `${tr.skew.toFixed(2)}deg`);
     });
 
     if (moving) idle = 0; else idle++;

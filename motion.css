@@ -154,12 +154,6 @@ body.nav-open .tc { opacity: 0; }
 .m-on .film-media > img { scale: 1.08; transition: transform 1s var(--ease), scale 1.6s var(--ease) 0.1s; }
 .m-on .film-media.is-shot > img { scale: 1; }
 
-/* ---------- Reels: lean with the swipe ---------- */
-.m-on .reels-track .reel-media, .m-on .explainer-reels .reel-media {
-  transform: skewX(var(--skew, 0deg));
-  transform-origin: 50% 100%;
-}
-
 /* ---------- Photos: parallax inside the frame ---------- */
 .m-on .photo img { inset: -9% 0; height: 118%; translate: 0 var(--py, 0px); }
 
