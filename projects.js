@@ -105,6 +105,43 @@ window.PORTFOLIO = {
     }
   ],
 
+  explainers: [
+    {
+      title: "Why AI Needs a Harness",
+      category: "AI",
+      image: "assets/explainers/ex2.jpg",
+      preview: "assets/video/ex2-preview.mp4",
+      video: "assets/video/ex2/master.m3u8",
+      url: "https://www.facebook.com/reel/938533692248689"
+    },
+    {
+      title: "How Google Maps Sees Traffic",
+      category: "Tech",
+      image: "assets/explainers/ex1.jpg",
+      preview: "assets/video/ex1-preview.mp4",
+      video: "assets/video/ex1/master.m3u8",
+      url: "https://www.facebook.com/reel/1796560441669716"
+    },
+    {
+      title: "How a Falcon 9 Lands Itself",
+      category: "Space",
+      image: "assets/explainers/ex3.jpg",
+      preview: "assets/video/ex3-preview.mp4",
+      video: "assets/video/ex3/master.m3u8",
+      url: "https://www.facebook.com/reel/1784108505961817"
+    },
+    {
+      title: "How Neural Networks Learn",
+      description: "From a phone that knows your face to ChatGPT: how a machine learns to think, start to finish.",
+      category: "AI",
+      wide: true,
+      image: "assets/explainers/ex4.jpg",
+      preview: "assets/video/ex4-preview.mp4",
+      video: "assets/video/ex4/master.m3u8",
+      url: "https://www.facebook.com/reel/1644402523879378"
+    }
+  ],
+
   /* Photography: each has -800.webp and -1600.webp */
   photos: [
     { src: "assets/photos/p01", w: 1200, h: 1600, alt: "Sailboat drifting through morning mist" },

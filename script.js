@@ -56,6 +56,41 @@
     );
   }
 
+  const explainers = document.getElementById("explainer-grid");
+  if (explainers) {
+    const all = (data.explainers || []).map((r, i) => ({ ...r, i }));
+    const wide = all.filter((r) => r.wide);
+    const tall = all.filter((r) => !r.wide);
+    explainers.innerHTML =
+      wide
+        .map(
+          (f) => `
+      <button type="button" class="film film-featured reveal" data-kind="explainer" data-index="${f.i}" aria-label="Play ${esc(f.title)}">
+        ${media(f, "film-media", false)}
+        <div class="film-info">
+          <span class="mono film-index">Long-form</span>
+          <div>
+            <p class="film-cat">${esc(f.category || "")}</p>
+            <h3 class="film-title">${esc(f.title)}</h3>
+            <p class="film-desc">${esc(f.description || "")}</p>
+          </div>
+          ${arrow}
+        </div>
+      </button>`
+        )
+        .join("") +
+      `<div class="explainer-reels">${tall
+        .map(
+          (r) => `
+      <button type="button" class="reel reveal" data-kind="explainer" data-index="${r.i}" aria-label="Play ${esc(r.title)}">
+        ${media(r, "reel-media", false)}
+        <p class="reel-client">${esc(r.category || "")}</p>
+        <h3 class="reel-title">${esc(r.title)}</h3>
+      </button>`
+        )
+        .join("")}</div>`;
+  }
+
   /* Muted previews: play while the card is on screen, pause when it leaves */
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection && navigator.connection.saveData;
@@ -117,7 +152,7 @@
   const stage = document.getElementById("playerStage");
   let lastFocus = null;
   const openPlayer = (kind, index) => {
-    const list = { film: data.films, motion: data.motion, reel: data.reels }[kind] || [];
+    const list = { film: data.films, motion: data.motion, reel: data.reels, explainer: data.explainers }[kind] || [];
     const item = list[index];
     if (!item || !player) return;
     lastFocus = document.activeElement;
@@ -126,7 +161,7 @@
     const link = document.getElementById("playerLink");
     link.href = item.url || "#";
     link.hidden = !item.url;
-    stage.classList.toggle("is-vertical", kind === "reel");
+    stage.classList.toggle("is-vertical", kind === "reel" || (kind === "explainer" && !item.wide));
     stage.classList.remove("is-error");
     pv.poster = item.image;
     loadSource(item.video);

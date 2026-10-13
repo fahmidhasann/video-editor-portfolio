@@ -394,3 +394,11 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
   .viewer-prev { left: 1rem; } .viewer-next { right: 1rem; }
   .viewer-fig { grid-column: 1; }
 }
+
+/* ---------- Explainers ---------- */
+.explainer-grid { display: grid; gap: 2.5rem; }
+.explainer-reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 900px; }
+@media (max-width: 900px) {
+  .explainer-reels { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 62vw; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .explainer-reels::-webkit-scrollbar { display: none; }
+}
