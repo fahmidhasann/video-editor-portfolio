@@ -98,7 +98,13 @@
     loadScript(HLS_CDN)
       .then(() => {
         if (!window.Hls || !window.Hls.isSupported()) { stage.classList.add("is-error"); return; }
-        hls = new window.Hls({ capLevelToPlayerSize: true });
+        hls = new window.Hls({
+          startLevel: -1,
+          capLevelToPlayerSize: false,
+          abrEwmaDefaultEstimate: 4000000,
+          abrBandWidthUpFactor: 0.8,
+          maxBufferLength: 30
+        });
         hls.loadSource(src);
         hls.attachMedia(pv);
         hls.on(window.Hls.Events.MANIFEST_PARSED, () => { const p = pv.play(); if (p) p.catch(() => {}); });

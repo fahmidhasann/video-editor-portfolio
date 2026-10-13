@@ -18,7 +18,7 @@ window.PORTFOLIO = {
       description: "Bangladesh Agricultural University, showcased like never before.",
       image: "assets/project_1.jpg",
       preview: "assets/video/film1-preview.mp4",
-      video: "assets/video/film1/index.m3u8",
+      video: "assets/video/film1/master.m3u8",
       url: "https://www.facebook.com/watch/?v=769200925475489"
     },
     {
@@ -27,7 +27,7 @@ window.PORTFOLIO = {
       description: "A cinematic exploration of life's complexities and choices.",
       image: "assets/project_2.jpg",
       preview: "assets/video/film2-preview.mp4",
-      video: "assets/video/film2/index.m3u8",
+      video: "assets/video/film2/master.m3u8",
       url: "https://www.facebook.com/fahmiddhasann/videos/2089556841420087"
     },
     {
@@ -36,7 +36,7 @@ window.PORTFOLIO = {
       description: "Your choices define your life's algorithm.",
       image: "assets/project_3.jpg",
       preview: "assets/video/film3-preview.mp4",
-      video: "assets/video/film3/index.m3u8",
+      video: "assets/video/film3/master.m3u8",
       url: "https://www.facebook.com/fahmiddhasann/videos/1470028527301962"
     }
   ],
@@ -48,7 +48,7 @@ window.PORTFOLIO = {
       description: "A youth-led education initiative, told through type, data and motion.",
       image: "assets/motion/onnoy.jpg",
       preview: "assets/video/motion1-preview.mp4",
-      video: "assets/video/motion1/index.m3u8",
+      video: "assets/video/motion1/master.m3u8",
       url: "https://www.facebook.com/reel/2913225312367215"
     },
     {
@@ -57,7 +57,7 @@ window.PORTFOLIO = {
       description: "Workspace, Robot and Cloud, explained in 45 seconds.",
       image: "assets/motion/craftly.jpg",
       preview: "assets/video/motion2-preview.mp4",
-      video: "assets/video/motion2/index.m3u8",
+      video: "assets/video/motion2/master.m3u8",
       url: "https://www.facebook.com/reel/1155787417015475"
     }
   ],
@@ -68,7 +68,7 @@ window.PORTFOLIO = {
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_1042219817454072.jpg",
       preview: "assets/video/reel1-preview.mp4",
-      video: "assets/video/reel1/index.m3u8",
+      video: "assets/video/reel1/master.m3u8",
       url: "https://www.facebook.com/reel/1042219817454072"
     },
     {
@@ -76,7 +76,7 @@ window.PORTFOLIO = {
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_438344139340070.jpg",
       preview: "assets/video/reel2-preview.mp4",
-      video: "assets/video/reel2/index.m3u8",
+      video: "assets/video/reel2/master.m3u8",
       url: "https://www.facebook.com/reel/438344139340070"
     },
     {
@@ -84,7 +84,7 @@ window.PORTFOLIO = {
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_624648880582291.jpg",
       preview: "assets/video/reel3-preview.mp4",
-      video: "assets/video/reel3/index.m3u8",
+      video: "assets/video/reel3/master.m3u8",
       url: "https://www.facebook.com/reel/624648880582291"
     },
     {
@@ -92,7 +92,7 @@ window.PORTFOLIO = {
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_1245324753666981.jpg",
       preview: "assets/video/reel4-preview.mp4",
-      video: "assets/video/reel4/index.m3u8",
+      video: "assets/video/reel4/master.m3u8",
       url: "https://www.facebook.com/reel/1245324753666981"
     },
     {
@@ -100,7 +100,7 @@ window.PORTFOLIO = {
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_1470923473890560.jpg",
       preview: "assets/video/reel5-preview.mp4",
-      video: "assets/video/reel5/index.m3u8",
+      video: "assets/video/reel5/master.m3u8",
       url: "https://www.facebook.com/reel/1470923473890560"
     }
   ]
