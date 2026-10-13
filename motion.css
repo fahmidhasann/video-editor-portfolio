@@ -13,24 +13,25 @@
 }
 .leak-a {
   left: 30%; top: -30vmax;
-  background: radial-gradient(closest-side, rgba(227, 173, 98, 0.15), rgba(227, 173, 98, 0.05) 45%, transparent 72%);
+  background: radial-gradient(closest-side, var(--leak-a), transparent 72%);
 }
 .leak-b {
   left: -40%; top: 20vh;
-  background: radial-gradient(closest-side, rgba(196, 92, 52, 0.11), rgba(196, 92, 52, 0.03) 50%, transparent 72%);
+  background: radial-gradient(closest-side, var(--leak-b), transparent 72%);
   opacity: 0;
 }
 .grain {
   position: fixed; inset: -60px; z-index: 90; pointer-events: none;
   background: url("assets/grain.png") repeat;
   background-size: 160px 160px;
-  opacity: 0.045;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
 }
-}
+[data-theme="dim"] .grain { opacity: 0.045; mix-blend-mode: normal; }
 
 /* Let the atmosphere breathe through the section backgrounds */
-.section-alt { background: rgba(19, 18, 16, 0.62); }
-.contact { background: radial-gradient(60% 80% at 50% 100%, rgba(227, 173, 98, 0.12), transparent 70%); }
+.section-alt { background: rgba(var(--paper2-rgb), 0.72); }
+.contact { background: radial-gradient(60% 80% at 50% 100%, rgba(var(--studio-rgb), 0.14), transparent 70%); }
 .hero-glow { display: none; }
 
 /* ---------- Header: scroll progress + timecode ---------- */
@@ -38,7 +39,7 @@
 @media (max-width: 380px) { .brand-name { font-size: 0.95rem; } }
 .scrub {
   position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; z-index: 3;
-  background: var(--accent);
+  background: var(--accent-bright);
   transform-origin: 0 50%; transform: scaleX(0);
   opacity: 0; transition: opacity 0.4s var(--ease);
   pointer-events: none;
@@ -61,8 +62,10 @@ body.nav-open .tc { opacity: 0; }
   .tc { display: inline-flex; }
   .m-on .nav { gap: 0.75rem; }
   .m-on .nav-toggle { margin-left: 0; margin-right: -10px; flex-shrink: 0; }
-  .brand { min-width: 0; }
+  .brand { min-width: 0; flex-shrink: 0; }
 }
+/* room for the theme toggle on phones: the timecode chip steps aside */
+@media (max-width: 430px) { .tc { display: none; } .m-on .nav .theme-toggle { margin-left: auto; } }
 
 /* ---------- Timeline rail (wide screens) ---------- */
 .rail { display: none; }
@@ -82,7 +85,7 @@ body.nav-open .tc { opacity: 0; }
   .rail-head {
     position: absolute; left: 50%; top: 0; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
     border-radius: 50%; background: var(--accent);
-    box-shadow: 0 0 0 4px rgba(227, 173, 98, 0.18);
+    box-shadow: 0 0 0 4px rgba(var(--studio-rgb), 0.2);
   }
   .rail-mark {
     position: absolute; left: 50%; width: 22px; height: 18px; margin: -9px 0 0 -11px;
@@ -142,12 +145,12 @@ body.nav-open .tc { opacity: 0; }
 /* ---------- Films: letterbox opens like a screen ---------- */
 .m-on .film-media::before, .m-on .film-media::after {
   content: ""; position: absolute; left: 0; right: 0; height: 13%; z-index: 3;
-  background: #050504; pointer-events: none;
-  transition: transform 1.2s var(--ease) 0.15s;
+  background: #1c1a17; pointer-events: none;
+  transition: transform 1.2s var(--ease) 0.15s, opacity 0.3s linear 1.2s;
 }
 .m-on .film-media::before { top: 0; transform-origin: 50% 0; }
 .m-on .film-media::after { bottom: 0; transform-origin: 50% 100%; }
-.m-on .film-media.is-shot::before, .m-on .film-media.is-shot::after { transform: scaleY(0); }
+.m-on .film-media.is-shot::before, .m-on .film-media.is-shot::after { transform: scaleY(0); opacity: 0; }
 .m-on .film-media > img { scale: 1.08; transition: transform 1s var(--ease), scale 1.6s var(--ease) 0.1s; }
 .m-on .film-media.is-shot > img { scale: 1; }
 
@@ -162,7 +165,7 @@ body.nav-open .tc { opacity: 0; }
 
 /* ---------- Contact: end-credits light sweep ---------- */
 .m-on .contact-title em {
-  background: linear-gradient(100deg, var(--accent) 0%, var(--accent) 38%, #fff3dc 50%, var(--accent) 62%, var(--accent) 100%);
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent) 38%, var(--sweep) 50%, var(--accent) 62%, var(--accent) 100%);
   background-size: 260% 100%; background-position: 100% 0;
   -webkit-background-clip: text; background-clip: text; color: transparent;
   padding-right: 0.08em;
