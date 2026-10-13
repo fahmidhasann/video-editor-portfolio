@@ -402,3 +402,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
   .explainer-reels { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 62vw; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
   .explainer-reels::-webkit-scrollbar { display: none; }
 }
+
+/* Previews are decoration: never take taps, never go fullscreen */
+video.preview { pointer-events: none; }
+video.preview::-webkit-media-controls { display: none !important; }

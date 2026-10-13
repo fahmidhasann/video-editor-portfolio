@@ -9,7 +9,7 @@
   const media = (p, ratio, eager) => `
     <div class="${ratio}">
       <img src="${esc(p.image)}" alt="${esc(p.title)}" loading="${eager ? "eager" : "lazy"}" decoding="async">
-      ${p.preview ? `<video class="preview" muted loop playsinline preload="none" data-src="${esc(p.preview)}" aria-hidden="true"></video>` : ""}
+      ${p.preview ? `<video class="preview" muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback x-webkit-airplay="deny" preload="none" tabindex="-1" data-src="${esc(p.preview)}" aria-hidden="true"></video>` : ""}
       <span class="play">${playIcon}</span>
     </div>`;
 
@@ -95,7 +95,11 @@
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection && navigator.connection.saveData;
   const previews = document.querySelectorAll("video.preview");
+  const touch = window.matchMedia("(hover: none)").matches;
   const startPreview = (v) => {
+    v.muted = true; v.defaultMuted = true; v.playsInline = true;
+    v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
+    if (touch) previews.forEach((o) => { if (o !== v && !o.paused) stopPreview(o); });
     if (!v.src) v.src = v.dataset.src;
     const p = v.play();
     if (p) p.then(() => v.classList.add("is-playing")).catch(() => {});
