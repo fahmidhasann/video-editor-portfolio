@@ -86,10 +86,9 @@
           (f) => `
       <button type="button" class="film film-featured reveal" data-kind="explainer" data-index="${f.i}" aria-label="Play ${esc(f.title)}">
         ${media(f, "film-media", false)}
-        <div class="film-info">
-          <span class="mono film-index">Long-form</span>
+        <div class="film-info film-info-plain">
           <div>
-            <p class="film-cat">${esc(f.category || "")}</p>
+            <p class="film-cat">Long-form${f.category ? ` · ${esc(f.category)}` : ""}</p>
             <h3 class="film-title">${esc(f.title)}</h3>
             <p class="film-desc">${esc(f.description || "")}</p>
           </div>

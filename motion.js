@@ -107,8 +107,22 @@
   const measure = () => {
     maxScroll = Math.max(1, root.scrollHeight - vh());
     starts = chapters.map((c) => Math.min(1, Math.max(0, (c.el.getBoundingClientRect().top + window.scrollY - 1) / maxScroll)));
-    marks.forEach((m, i) => (m.style.top = `${starts[i] * 100}%`));
+    marks.forEach((m, i) => (m.style.top = `${(i / Math.max(1, marks.length - 1)) * 100}%`));
     kick();
+  };
+
+  /* Marks sit evenly on the rail; the head maps page progress between them */
+  const railPos = (p) => {
+    const n = starts.length;
+    if (n < 2) return p;
+    for (let i = n - 1; i >= 0; i--) {
+      if (p >= starts[i]) {
+        const a = starts[i], b = i < n - 1 ? starts[i + 1] : 1;
+        const f = b > a ? Math.min(1, (p - a) / (b - a)) : 1;
+        return Math.min(1, (i + (i < n - 1 ? f : 0)) / (n - 1));
+      }
+    }
+    return 0;
   };
 
   /* ---------- Timecode: the page plays like a 3-minute cut at 24 fps ---------- */
@@ -146,8 +160,9 @@
     if (Math.abs(p - lp) > 0.00005) {
       lp = p;
       scrub.style.transform = `scaleX(${p})`;
-      railFill.style.transform = `scaleY(${p})`;
-      railHead.style.transform = `translate3d(0, ${p * rail.clientHeight}px, 0)`;
+      const rp = railPos(p);
+      railFill.style.transform = `scaleY(${rp})`;
+      railHead.style.transform = `translate3d(0, ${rp * rail.clientHeight}px, 0)`;
       rail.classList.toggle("is-on", sy > vh() * 0.5);
       timecode(p);
       let a = 0;
