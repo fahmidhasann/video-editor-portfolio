@@ -98,14 +98,6 @@ window.PORTFOLIO = {
       url: "https://www.facebook.com/reel/438344139340070"
     },
     {
-      title: "Before You Run to Lose Weight",
-      client: "Sajjad Hossain Snigdho",
-      image: "assets/client/reel_624648880582291.jpg",
-      preview: "assets/video/reel3-preview.mp4",
-      video: "assets/video/reel3/master.m3u8",
-      url: "https://www.facebook.com/reel/624648880582291"
-    },
-    {
       title: "For New Runners",
       client: "Sajjad Hossain Snigdho",
       image: "assets/client/reel_1245324753666981.jpg",
