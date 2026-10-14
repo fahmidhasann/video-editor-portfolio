@@ -142,7 +142,7 @@ window.PORTFOLIO = {
     },
     {
       title: "How Neural Networks Learn",
-      description: "From a phone that knows your face to ChatGPT: how a machine learns to think, start to finish.",
+      description: "How a machine learns to think, from Face ID to ChatGPT.",
       category: "AI",
       wide: true,
       image: "assets/explainers/ex4.jpg",
