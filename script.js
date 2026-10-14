@@ -346,7 +346,7 @@
       })
     );
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
-  window.matchMedia("(min-width: 761px)").addEventListener("change", (m) => { if (m.matches) setMenu(false); });
+  window.matchMedia("(min-width: 1121px)").addEventListener("change", (m) => { if (m.matches) setMenu(false); });
 
   /* Reveal on scroll */
   const items = document.querySelectorAll(".reveal");

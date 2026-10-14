@@ -362,7 +362,8 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
   .hero-figure { justify-self: center; max-width: 440px; order: -1; }
   .about-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 760px) {
+/* Hamburger menu up to small laptops: the full link row needs ~1120px */
+@media (max-width: 1120px) {
   .nav-cta { display: none; }
   .nav-toggle { display: flex; }
   .nav .theme-toggle { margin-left: auto; }
@@ -400,6 +401,8 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
   .nav-cta-mobile { display: block; }
   .nav-cta-mobile a { color: var(--accent); }
   body.nav-open .header::before { opacity: 0; }
+}
+@media (max-width: 760px) {
   .films { grid-template-columns: 1fr; }
   .film-featured .film-media { aspect-ratio: 16 / 9; }
   .film-arrow { display: none; }
