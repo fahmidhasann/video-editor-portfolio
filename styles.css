@@ -494,7 +494,7 @@ em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var
 
 /* ---------- Explainers ---------- */
 .explainer-grid { display: grid; gap: 2.5rem; }
-.explainer-reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 900px; }
+.explainer-reels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; max-width: 1200px; }
 @media (max-width: 900px) {
   .explainer-reels { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 62vw; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
   .explainer-reels::-webkit-scrollbar { display: none; }

@@ -141,6 +141,14 @@ window.PORTFOLIO = {
       url: "https://www.facebook.com/reel/1784108505961817"
     },
     {
+      title: "Why Face ID Works in the Dark",
+      category: "Tech",
+      image: "assets/explainers/ex5.jpg",
+      preview: "assets/video/ex5-preview.mp4",
+      video: "assets/video/ex5/master.m3u8",
+      url: "https://www.facebook.com/reel/1689319389434635"
+    },
+    {
       title: "How Neural Networks Learn",
       description: "How a machine learns to think, from Face ID to ChatGPT.",
       category: "AI",
